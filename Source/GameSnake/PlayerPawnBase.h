@@ -6,6 +6,9 @@
 #include "GameFramework/Pawn.h"
 #include "PlayerPawnBase.generated.h"
 
+class UCameraComponent;
+class ASnakeBase;
+
 UCLASS()
 class GAMESNAKE_API APlayerPawnBase : public APawn
 {
@@ -15,6 +18,14 @@ public:
 	// Sets default values for this pawn's properties
 	APlayerPawnBase();
 
+	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite)
+	UCameraComponent* PawnCamera;
+
+	UPROPERTY(BlueprintReadWrite)
+	ASnakeBase* SnakeActor;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ASnakeBase> SnakeActorClass;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -22,8 +33,16 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void CreateSnakeActor();
+
+	UFUNCTION()
+	void HandlePlayerVerticalInput(float value);
+	
+	UFUNCTION()
+	void HandlePlayerHorizontalInput(float value);
 };

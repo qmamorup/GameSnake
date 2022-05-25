@@ -2,6 +2,9 @@
 
 
 #include "PlayerPawnBase.h"
+#include "Camera/CameraComponent.h"
+#include "SnakeBase.h"
+#include "Components/InputComponent.h"
 
 // Sets default values
 APlayerPawnBase::APlayerPawnBase()
@@ -9,13 +12,16 @@ APlayerPawnBase::APlayerPawnBase()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	PawnCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PawnCamera"));
+	RootComponent = PawnCamera;
 }
 
 // Called when the game starts or when spawned
 void APlayerPawnBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	SetActorRotation(FRotator(-90, 0, 0));
+	CreateSnakeActor();
 }
 
 // Called every frame
@@ -30,5 +36,42 @@ void APlayerPawnBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis("Vertical", this, &APlayerPawnBase::HandlePlayerVerticalInput);
+	PlayerInputComponent->BindAxis("Horizontal", this, &APlayerPawnBase::HandlePlayerHorizontalInput);
+}
+
+void APlayerPawnBase::CreateSnakeActor()
+{
+	SnakeActor = GetWorld()->SpawnActor<ASnakeBase>(SnakeActorClass, FTransform());
+}
+
+void APlayerPawnBase::HandlePlayerVerticalInput(float value)
+{
+	if (IsValid(SnakeActor))
+	{
+		if (value > 0 && SnakeActor->LastMoveDirectrion != EMovementDirectrion::DOWN)
+		{
+			SnakeActor->LastMoveDirectrion = EMovementDirectrion::UP;
+		}
+		else if (value < 0 && SnakeActor->LastMoveDirectrion != EMovementDirectrion::UP)
+		{
+			SnakeActor->LastMoveDirectrion = EMovementDirectrion::DOWN;
+		}
+	}
+}
+
+void APlayerPawnBase::HandlePlayerHorizontalInput(float value)
+{
+	if (IsValid(SnakeActor))
+	{
+		if (value > 0 && SnakeActor->LastMoveDirectrion != EMovementDirectrion::LEFT)
+		{
+			SnakeActor->LastMoveDirectrion = EMovementDirectrion::RIGHT;
+		}
+		else if (value < 0 && SnakeActor->LastMoveDirectrion != EMovementDirectrion::RIGHT)
+		{
+			SnakeActor->LastMoveDirectrion = EMovementDirectrion::LEFT;
+		}
+	}
 }
 
