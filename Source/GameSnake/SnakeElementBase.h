@@ -29,5 +29,4 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	void SetFirtsElementType();
-	void SetFirstElementType_Implementation();
 };

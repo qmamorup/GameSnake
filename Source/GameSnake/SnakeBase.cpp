@@ -50,7 +50,7 @@ void ASnakeBase::AddSnakeElement(int ElementsNum)
 void ASnakeBase::Move()
 {
 	FVector MovementVector(ForceInitToZero);
-	float MovementSpeed = ElementSize;
+	MovementSpeed = ElementSize;
 
 	switch (LastMoveDirectrion)
 	{
