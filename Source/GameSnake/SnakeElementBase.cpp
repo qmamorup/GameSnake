@@ -39,7 +39,12 @@ void ASnakeElementBase::Interact(AActor* Interactor, bool bIsHead)
 	auto Snake = Cast<ASnakeBase>(Interactor);
 	if (IsValid(Snake))
 	{
-		Snake->Destroy();
+		Snake->Life -=1;
+		if (Snake->Life <= 0)
+		{
+			Snake->DestroySnake();
+			Snake->Destroy();
+		}
 	}
 }
 
@@ -66,6 +71,11 @@ void ASnakeElementBase::ToggleCollision()
 	{
 		MeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
+}
+
+void ASnakeElementBase::ToggleVisible()
+{
+	MeshComponent->SetVisibility(true);
 }
 
 

@@ -45,4 +45,6 @@ public:
 	
 	UFUNCTION()
 	void HandlePlayerHorizontalInput(float value);
+
 };
+

@@ -34,6 +34,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	void SetFirtsElementType();
+	void SetFirstElementType_Implementation();
 
 	virtual void Interact(AActor* Interactor, bool bIsHead) override;
 
@@ -44,6 +45,10 @@ public:
 			int32 OtherBodyIndex,
 			bool bFromSweep,
 			const FHitResult &SweepResult);
+	
 	UFUNCTION()
 	void ToggleCollision();
+	UFUNCTION()
+	void ToggleVisible();
+
 };

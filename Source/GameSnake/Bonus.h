@@ -5,18 +5,21 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Interactable.h"
-#include "Food.generated.h"
+#include "Bonus.generated.h"
 
 UCLASS()
-class GAMESNAKE_API AFood : public AActor, public IInteractable
+class GAMESNAKE_API ABonus : public AActor, public IInteractable
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AFood();
+	ABonus();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 FoodPower;
+	int32 BonusPower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool BonusSpeed;
 
 protected:
 	// Called when the game starts or when spawned
@@ -27,4 +30,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Interact(AActor* Interactor, bool bIsHead) override;
+
 };

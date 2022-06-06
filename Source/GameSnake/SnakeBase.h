@@ -35,6 +35,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MovementSpeed;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float MovementBonusSpeed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 Life;
+
+	UPROPERTY()
+	bool HeadUp;
+
 	UPROPERTY()
 	TArray<ASnakeElementBase*> SnakeElements;
 
@@ -53,4 +62,8 @@ public:
 	void Move();
 	UFUNCTION()
 	void SnakeElementOverlap(ASnakeElementBase* OverlappedElement, AActor* Other);
+
+	UFUNCTION(BlueprintCallable)
+	void DestroySnake();
+
 };

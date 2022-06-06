@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "SnakeBase.h"
 #include "Components/InputComponent.h"
+#include "Food.h"
 
 // Sets default values
 APlayerPawnBase::APlayerPawnBase()
@@ -74,4 +75,3 @@ void APlayerPawnBase::HandlePlayerHorizontalInput(float value)
 		}
 	}
 }
-

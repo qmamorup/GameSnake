@@ -11,8 +11,9 @@ ASnakeBase::ASnakeBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	ElementSize = 100.f;
+	ElementSize = 50.f;
 	MovementSpeed = 0.3f;
+	MovementBonusSpeed = 0.5f;
 	LastMoveDirectrion = EMovementDirectrion::DOWN;
 }
 
@@ -21,7 +22,7 @@ void ASnakeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	SetActorTickInterval(MovementSpeed);
-	AddSnakeElement(3);
+	AddSnakeElement(1);
 	
 }
 
@@ -79,11 +80,25 @@ void ASnakeBase::Move()
 		auto PrevElement = SnakeElements[i - 1];
 		FVector PrevLocation = PrevElement->GetActorLocation();
 		FVector LocalKostul(PrevLocation.X, PrevLocation.Y, 0);
-		CurrentElement->SetActorLocation(PrevLocation);
+		CurrentElement->SetActorLocation(LocalKostul);
+	}
+	for (int i = SnakeElements.Num() - 1; i > 0; i--)
+	{
+		SnakeElements[i]->ToggleVisible();   
 	}
 
-	SnakeElements[0]->AddActorWorldOffset(MovementVector);
-	SnakeElements[0]->ToggleCollision();
+	FVector Kostul(MovementVector.X, MovementVector.Y, 5);    
+	if (HeadUp == true)
+	{
+		SnakeElements[0]->AddActorWorldOffset(Kostul);
+		SnakeElements[0]->ToggleCollision();
+		HeadUp = false;
+	}
+	else
+	{
+		SnakeElements[0]->AddActorWorldOffset(MovementVector);
+		SnakeElements[0]->ToggleCollision();
+	}
 }
 
 void ASnakeBase::SnakeElementOverlap(ASnakeElementBase* OverlappedElement, AActor* Other)
@@ -98,5 +113,13 @@ void ASnakeBase::SnakeElementOverlap(ASnakeElementBase* OverlappedElement, AActo
 		{
 			InteractableInterface->Interact(this, bIsFirst);
 		}
+	}
+}
+
+void ASnakeBase::DestroySnake()
+{
+	for (int i = SnakeElements.Num() - 1; i >= 0; i--)
+	{
+		SnakeElements[i]->Destroy();
 	}
 }
